@@ -3,6 +3,8 @@ wireguard_port: "5888"
 wireguard_path: "/etc/wireguard"
 
 wireguard_network_name: "private"
+wireguard_network: "10.1.0.0/32"
+allow_nat_clients: false
 
 debian_enable_testing: true
 debian_pin_packages: true
