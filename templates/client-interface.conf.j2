@@ -7,3 +7,4 @@ ListenPort = {{ wireguard_port }}
 PublicKey = {{ hostvars[wireguard_server_name].public.content | b64decode | trim }}
 AllowedIPs = {{ wireguard_network }}
 Endpoint = {{ hostvars[wireguard_server_name].ansible_default_ipv4.address }}:{{ wireguard_port }}
+PersistentKeepalive = 10
