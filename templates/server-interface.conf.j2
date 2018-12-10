@@ -2,22 +2,17 @@
 Address = {{ vpn_ip }}
 PrivateKey = {{ private.content | b64decode | trim }}
 ListenPort = {{ wireguard_port }}
-{% if allow_nat_clients %}
-PreUp = iptables -t nat -A POSTROUTING -s {{ wireguard_network }}  -o {{ wireguard_network_name }} -j MASQUERADE
-PostDown = iptables -t nat -D POSTROUTING -s {{ wireguard_network }}  -o {{ wireguard_network_name }} -j MASQUERADE
-{% endif %}
 
 {% for node in play_hosts %}
 {% if inventory_hostname != hostvars[node]['inventory_hostname'] %}
 [Peer]
 PublicKey = {{ hostvars[node].public.content | b64decode | trim }}
 AllowedIPs = {{ hostvars[node].vpn_ip }}
-Endpoint = {{ hostvars[node].ansible_default_ipv4.address }}:{{ wireguard_port }}
+PersistentKeepalive = 10
 
 {% endif %}
 {% endfor %}
 
-{% if allow_nat_clients %}
 {% for vpn_client in vpn_clients %}
 [Peer]
 PublicKey = {{ vpn_client.public_key }}
@@ -25,4 +20,3 @@ AllowedIPs = {{ vpn_client.ip }}
 PersistentKeepalive = 10
 
 {% endfor %}
-{% endif %}
