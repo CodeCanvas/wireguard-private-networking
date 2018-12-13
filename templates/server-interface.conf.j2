@@ -10,7 +10,7 @@ PostDown = iptables -t nat -D POSTROUTING -s {{ wireguard_network }}  -o {{ wire
 [Peer]
 PublicKey = {{ hostvars[node].public.content | b64decode | trim }}
 AllowedIPs = {{ hostvars[node].vpn_ip }}
-PersistentKeepalive = 10
+Endpoint = {{ hostvars[node].ansible_default_ipv4.address }}:{{ wireguard_port }}
 
 {% endif %}
 {% endfor %}
